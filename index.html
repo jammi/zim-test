@@ -1,0 +1,46 @@
+<html><head>
+<title>JPEG Animation example</title></head><body></body>
+<script>
+(function(){
+  var
+  animFrame = document.createElement('div'),
+
+  // animation-specific settings:
+  imgSrc = 'zim.jpg', // filename
+  frames = 16, // number of frames
+  frameWidth = 320, // frame width in pixels
+  frameHeight = 240, // frame height in pixels
+  pixelRatio = 2, // amount of enlargement
+  frameSpeed = 100, // ms
+  ////
+
+  props = [
+    ['position','absolute'],
+    ['left',0],
+    ['top',0],
+    ['width',frameWidth+'px'],
+    ['height',frameHeight+'px'],
+    ['zoom',(pixelRatio*100)+'%'],
+    ['backgroundImage','url('+imgSrc+')']
+  ],
+  i=0,
+  prop,val,
+  pl=props.length,
+  aStyle = animFrame.style,
+  frame=0,
+  bgPos='backgroundPosition',
+  frameStep = function(){
+    if(frame==frames){frame=0;}
+    aStyle[bgPos] = 0-(frame*frameWidth)+'px 0'
+    frame++;
+  };
+  for(;i<pl;i++){
+    prop = props[i][0];
+    val = props[i][1];
+    aStyle[prop]=val;
+  }
+  document.body.appendChild(animFrame);
+  setInterval(frameStep,frameSpeed);
+})();
+</script>
+</html>
