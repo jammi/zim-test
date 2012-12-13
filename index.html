@@ -1,5 +1,27 @@
 <html><head>
-<title>JPEG Animation example</title></head><body></body>
+<title>JPEG Animation example</title><style>
+.buttons {
+  position: absolute; top: 0; height: 24px; width: 100%;
+  line-height: 24px; font-family: Helvetica, sans-serif;
+  font-size: 15px; vertical-align: middle; color: #000;
+}
+.buttons > span {
+  border: 1px solid black;
+  background: #ccc; padding-left: 8px; padding-right: 8px;
+  cursor: pointer;
+}
+</style></head><body>
+<div class=buttons>
+  Quality:
+  <span class="setimg" val="url(zim.jpg)">20% (100k)</span>
+  <span class="setimg" val="url(zim2.jpg)">72% (200k)</span>
+  <span class="setimg" val="url(zim3.jpg)">100% (900k)</span>
+  Speed:
+  <span class="setspeed" val="100">1</span>
+  <span class="setspeed" val="50">2</span>
+  <span class="setspeed" val="25">4</span>
+</div>
+</body>
 <script>
 (function(){
   var
@@ -17,7 +39,7 @@
   props = [
     ['position','absolute'],
     ['left',0],
-    ['top',0],
+    ['top','20px'],
     ['width',frameWidth+'px'],
     ['height',frameHeight+'px'],
     ['zoom',(pixelRatio*100)+'%'],
@@ -28,19 +50,33 @@
   pl=props.length,
   aStyle = animFrame.style,
   frame=0,
-  bgPos='backgroundPosition',
+  qButtons = document.getElementsByClassName('setimg'),
+  sButtons = document.getElementsByClassName('setspeed'),
   frameStep = function(){
     if(frame==frames){frame=0;}
-    aStyle[bgPos] = 0-(frame*frameWidth)+'px 0'
+    aStyle.backgroundPosition = 0-(frame*frameWidth)+'px 0'
     frame++;
+    setTimeout(frameStep,frameSpeed);
+  },
+  setImg = function(){
+    aStyle.backgroundImage = this.getAttribute('val');
+  },
+  setSpeed = function(){
+    frameSpeed = parseInt(this.getAttribute('val'),10);
   };
   for(;i<pl;i++){
     prop = props[i][0];
     val = props[i][1];
     aStyle[prop]=val;
   }
+  for(i=0;i<qButtons.length;i++){
+    qButtons[i].addEventListener('click',setImg,true);
+  }
+  for(i=0;i<sButtons.length;i++){
+    sButtons[i].addEventListener('click',setSpeed,true);
+  }
   document.body.appendChild(animFrame);
-  setInterval(frameStep,frameSpeed);
+  frameStep();
 })();
 </script>
 </html>
