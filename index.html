@@ -1,7 +1,7 @@
 <html><head>
 <title>JPEG Animation example</title><style>
 .buttons {
-  position: absolute; top: 0; height: 24px; width: 100%;
+  position: absolute; top: 15px; height: 24px; width: 100%;
   line-height: 24px; font-family: Helvetica, sans-serif;
   font-size: 15px; vertical-align: middle; color: #000;
 }
@@ -17,9 +17,12 @@
   <span class="setimg" val="url(zim2.jpg)">72% (200k)</span>
   <span class="setimg" val="url(zim3.jpg)">100% (900k)</span>
   Speed:
-  <span class="setspeed" val="100">1</span>
-  <span class="setspeed" val="50">2</span>
-  <span class="setspeed" val="25">4</span>
+  <span class="setspeed" val="100">1x</span>
+  <span class="setspeed" val="50">2x</span>
+  <span class="setspeed" val="25">4x</span>
+  Size:
+  <span class="setsize" val="1">1x</span>
+  <span class="setsize" val="2">2x</span>
 </div>
 </body>
 <script>
@@ -52,6 +55,7 @@
   frame=0,
   qButtons = document.getElementsByClassName('setimg'),
   sButtons = document.getElementsByClassName('setspeed'),
+  xButtons = document.getElementsByClassName('setsize'),
   frameStep = function(){
     if(frame==frames){frame=0;}
     aStyle.backgroundPosition = 0-(frame*frameWidth)+'px 0'
@@ -63,6 +67,16 @@
   },
   setSpeed = function(){
     frameSpeed = parseInt(this.getAttribute('val'),10);
+  },
+  setSize = function(){
+    pixelRatio = parseInt(this.getAttribute('val'),10);
+    if( pixelRatio == 1 ){
+      aStyle.top = '40px';
+    }
+    else if( pixelRatio == 2 ){
+      aStyle.top = '20px';
+    }
+    aStyle.zoom = (pixelRatio*100)+'%';
   };
   for(;i<pl;i++){
     prop = props[i][0];
@@ -74,6 +88,9 @@
   }
   for(i=0;i<sButtons.length;i++){
     sButtons[i].addEventListener('click',setSpeed,true);
+  }
+  for(i=0;i<xButtons.length;i++){
+    xButtons[i].addEventListener('click',setSize,true);
   }
   document.body.appendChild(animFrame);
   frameStep();
